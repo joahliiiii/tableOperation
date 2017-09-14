@@ -1,0 +1,18 @@
+tableOperation
+
+功能 : 
+	添加用户
+
+	编辑用户 ?
+	查询用户
+	删除用户
+	多条件查询用户
+
+entity: 
+	Customer 里面的属性要和数据库内存储的表单项要对应.
+
+dao: 
+
+service: 
+
+servlet:
