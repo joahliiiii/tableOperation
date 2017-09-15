@@ -1,18 +1,53 @@
 tableOperation
 
+但是现在怎么实现在main.jsp 里面显示这么多的东西 ?
+二次确认怎么弄 ?(js弹窗)  在js里面使用confirm("")
 功能 : 
-	添加用户
+		编辑用户 (就是查询完了用户之后显示两个链接 编辑 删除)
+			主要是先吧查询好了的数据存到session,然后读取到表单里面然后修改之后点击提交按钮,跳转到editServlet(),之后显示成功/错误信息
+		删除用户(这里使用伪删除操作.)
+			先做好二次确认,然后deleteServlet() ?,然后显示修改之后的信息 ?
 
-	编辑用户 ?
-	查询用户
-	删除用户
-	多条件查询用户
+
+	添加用户: 显示表单, 后面是错误提示,下面有俩个按钮(提交+重置) 
+		最好再有插入成功提示.
+		对应的servlet: addServlet()
+	用户搜索: 
+		查询框+ 错误提醒 + 提交按钮  查询结果显示之后有选项编辑+ 删除
+
+
+
+		查询条件: 使用id(/ 名字)为了保证数据的安全使用单一的查询条件.加入检测
+		点击查询按钮跳转selectServlet()
+
+	多条件查询用户: 
+		查询框 + 错误提醒 + 提交按钮  查询结果显示之后有选项编辑+ 删除
+
+
+		查询条件: 使用id+ name+ sex +birthday + phone +email
+		如果输入框没有内容的话,那么就默认没有这个查询条件
+			具体查询:　查询操作，基础的sql是没有任何条件的，检测看那个框框不为空就加哪个参数就可以. 需要在js里面添加全为空的检测.全为空就显示错误提示
+		点击提交按钮跳转到advanceSelectServlet()
 
 entity: 
 	Customer 里面的属性要和数据库内存储的表单项要对应.
 
 dao: 
+	CustomerDao :
+		#insertCustomer
+		#deleteCustomer
+		#
 
 service: 
 
 servlet:
+
+
+数据库: 还需要在数据库内设置一个isDelete的属性,默认是false,执行完了删除之后变成了true
+	id: 
+	name:
+	sex:
+	birthday:
+	phoneNumber:
+	email:
+	description:
