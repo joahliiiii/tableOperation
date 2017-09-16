@@ -45,6 +45,74 @@ function checkEmail() {
         return false;
     }
 }
-function check() {
+function addCheck() {
     return (checkName() && checkEmail()) && checkNumber();
+}
+function selectCheck() {
+    return checkName();
+}
+function checkName2() {
+   var nameO = document.getElementById("nameI");
+   var nameV = nameO.value;
+   var nameSO = document.getElementById("nameS");
+    /**
+     * 名字规则:
+     * 可以为汉字,不可以为空
+     * 用户名 2~18
+     * 用户名不可以含有非法字符
+     */
+    var reg=/^[a-zA-Z\u4e00-\u9fa5_][0-9a-zA-Z\u4e00-\u9fa5_]{1,17}$/;
+    if(0<nameV.length){
+        if(reg.test(nameV)){
+            nameSO.innerHTML = "name is legal!".fontcolor("Green");
+            return true;
+        }else{
+            nameSO.innerHTML = "Please check name!".fontcolor("Red");
+            nameO.focus();
+            return false;
+        }
+    }else{
+        nameSO.innerHTML = "";
+        return true;
+    }
+}
+function checkNumber2() {
+    var numberO = document.getElementById("phoneNumberI");
+    var numberV = numberO.value;
+    var numberSO = document.getElementById("phoneNumberS");
+    var reg = /^1[34578]\d{9}$/;
+
+    if(numberV.length !== 0){
+        if(numberV.length === 11 && reg.test(numberV)){
+            numberSO.innerHTML = "phoneNumber is legal! ".fontcolor("Green");
+            return true;
+        }else{
+            numberSO.innerHTML = "Please check phoneNumber! ".fontcolor("Red");
+            return false;
+        }
+    }else{
+        numberSO.innerHTML = "";
+        return true;
+    }
+}
+function checkEmail2() {
+    var emailO = document.getElementById("emailI");
+    var emailV = emailO.value;
+    var emailSO = document.getElementById("emailS");
+    var reg = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+    if(emailV.length!==0){
+        if( reg.test(emailV)){
+            emailSO.innerHTML = "email is legal! ".fontcolor("Green");
+            return true;
+        }else{
+            emailSO.innerHTML = "Please check email! ".fontcolor("Red");
+            return false;
+        }
+    }else{
+        emailSO.innerHTML = "";
+        return true;
+    }
+}
+function selectCheck2() {
+    return (checkName2() && checkEmail2()) && checkNumber2();
 }
