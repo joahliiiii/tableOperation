@@ -14,54 +14,57 @@
     <script language="JavaScript" type="text/javascript" src="<c:url value="/JavaScript/checkForm.js"/>"></script>
 </head>
 <body>
-    <form action="<c:url value="com/joah/tableOperation/web/servlet/addServlet"/> " method="post">
-        <table>
-        	<thead>
-        		<tr>
-        			<th align="center" colspan="2">添加用户</th>
-        		</tr>
-        	</thead>
-        	<tbody>
-        		<tr>
-        			<td align="right"><label for="nameI">name:</label></td>
-        			<td><input type="text" name="nameN" placeholder="用户名" id="nameI" onblur="checkName()"><span id="nameS"></span></td>
-        		</tr>
-        		<tr>
-        			<td align="right">sex:</td>
-        			<td>
-                        <input type="radio" name="male" value="male" id="maleI"><label for="maleI">男</label>
-        				<input type="radio" name="female" value="female" id="femaleI"><label for="femaleI">女</label>
-                        <span id="sexS"></span>
-        			</td>
-        		</tr>
-        		<tr>
-        			<td align="right"><label for="birthdayI">birthday:</label></td>
-                    <th><input type="text" class="Wdate" onClick="WdatePicker({el:this,dateFmt:'yyyy-MM-dd'})" id="birthdayI">
-                    <span id="birthdayS"></span>
-                    </th>
-        		</tr>
+    <div align="center">
+        <form action="<c:url value="/com/joah/tableOperation/web/servlet/addServlet"/> " method="post">
+            <table>
+                <thead>
                 <tr>
-                    <th align="right"><label for="phoneNumberI">phoneNumber:</label></th>
-                    <th><input type="text" name="phoneNumber" placeholder="电话号码" id="phoneNumberI" onblur="checkNumber()">
-                    <span id="phoneNumberS"></span></th>
+                    <th align="center" colspan="2">添加用户</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td align="right"><label for="nameI">name:</label></td>
+                    <td><input type="text" name="nameN" placeholder="用户名" id="nameI" onblur="checkName()" align="left"></td>
+                    <td style="width: 250px"><span id="nameS" ></span></td>
                 </tr>
                 <tr>
-                    <th align="right"><label for="emailI">email:</label></th>
-                    <th><input type="text" name="email" placeholder="邮箱" id="emailI" onblur="checkEmail()">
-                    <span id="emailS"></span></th>
+                    <td align="right">sex:</td>
+                    <td>
+                        <input type="radio" name="male" value="male" id="maleI" align="left"><label for="maleI" >男</label>
+                        <input type="radio" name="female" value="female" id="femaleI" align="left"><label for="femaleI">女</label>
+                    </td>
+                    <td><span id="sexS"></span></td>
                 </tr>
                 <tr>
-                    <th align="right"><label for="descriptionI">description:</label></th>
-                    <th><textarea name="description" id="descriptionI" style="width: 333px; height: 51px;"></textarea></th>
+                    <td align="right"><label for="birthdayI">birthday:</label></td>
+                    <td><input type="text" class="Wdate" onClick="WdatePicker({el:this,dateFmt:'yyyy-MM-dd'})" id="birthdayI" align="left">
+                    </td>
+                    <td><span id="birthdayS"></span></td>
+                </tr>
+                <tr>
+                    <td align="right"><label for="phoneNumberI">phoneNumber:</label></td>
+                    <td><input type="text" name="phoneNumber" placeholder="电话号码" id="phoneNumberI" onblur="checkNumber()" align="left"></td>
+                    <td style="width: 250px"><span id="phoneNumberS" ></span></td>
+                </tr>
+                <tr>
+                    <td align="right"><label for="emailI">email:</label></td>
+                    <td><input type="text" name="email" placeholder="邮箱" id="emailI" onblur="checkEmail()" align="left"></td>
+                    <td style="width: 250px"><span id="emailS" ></span></td>
+                </tr>
+                <tr>
+                    <td align="right"><label for="descriptionI">description:</label></td>
+                    <td><textarea name="description" id="descriptionI" style="width: 333px; height: 51px;"></textarea></td>
                 </tr>
                 <tr>
                     <td align="center" colspan="2">
-                        <button type="submit" onclick="return check()"> submit </button>&nbsp;&nbsp;
+                        <button type="submit" onclick="return addCheck()"> submit </button>&nbsp;&nbsp;
                         <button type="reset" > reset </button>
                     </td>
                 </tr>
-        	</tbody>
-        </table>
-    </form>
+                </tbody>
+            </table>
+        </form>
+    </div>
 </body>
 </html>
