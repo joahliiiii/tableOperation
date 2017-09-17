@@ -9,7 +9,6 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <base target="bottom">
     <title>bottom</title>
 </head>
 <body>

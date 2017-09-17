@@ -9,10 +9,14 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <base target="top">
+    <%--<base target="top">--%>
     <title>Top</title>
 </head>
 <body>
-    <p>top</p>
+    <div align="right" id="topNav">
+        <a href="#"> 用户名 </a> &nbsp;&nbsp;
+        <a href="#"> 退出 </a>
+    </div>
+
 </body>
 </html>

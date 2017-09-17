@@ -11,10 +11,12 @@
 <head>
     <title>ManagePage</title>
 </head>
-    <frameset rows="5%,15%,70%,10%" frameborder="no">
+    <%--frameborder="no" 表示frameset没边框了--%>
+    <frameset rows="5%,15%,70%,10%" >
         <frame src="<c:url value="top.jsp"/>" name="top"/>
         <frame src="<c:url value="title.jsp"/>" name="title">
-        <frameset cols="30%,70%" frameborder="no">
+        <%--<frameset cols="20%,*" frameborder="no">--%>
+        <frameset cols="20%,*">
             <frame src="<c:url value="operations.jsp"/> " name="operations">
             <frame src="<c:url value="main.jsp"/> " name="main">
         </frameset>
