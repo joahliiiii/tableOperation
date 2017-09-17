@@ -15,9 +15,9 @@ js 的命名规则:
 
 功能 : 
 		编辑用户 (就是查询完了用户之后显示两个链接 编辑 删除)
-			主要是先吧查询好了的数据存到session,然后读取到表单里面然后修改之后点击提交按钮,跳转到editServlet(),之后显示成功/错误信息
+			主要是先吧查询好了的数据存到session,然后读取到表单里面然后修改之后点击提交按钮,跳转到editServlet.java  ,之后显示成功/错误信息
 		删除用户(这里使用伪删除操作.)
-			先做好二次确认,然后deleteServlet() ?,然后显示修改之后的信息 ?
+			先做好二次确认,然后deleteServlet.java ?,然后显示修改之后的信息 ?
 
 
 	添加用户: 跳转 add.jsp 
@@ -41,25 +41,60 @@ js 的命名规则:
 			具体查询:　查询操作，基础的sql是没有任何条件的，检测看那个框框不为空就加哪个参数就可以. 需要在js里面添加全为空的检测.全为空就显示错误提示
 		点击提交按钮跳转到advancedSelectServlet()
 
-		这里需要注意在校验表单项的时候,需要注意不是必填项目,如果从有字符到没有字符的转换时候后面的提示信息也是需要改变的,还要有返回值.
+		这里需要注意在校验表单项的时候,需要注意每个表单都不是必填项目,如果从有字符到没有字符的转换时候后面的提示信息也是需要改变的,还要有返回值.
 
 entity: 
 	Customer 里面的属性要和数据库内存储的表单项要对应.
 
 dao: 
 	CustomerDao :
-		#insertCustomer
-		#deleteCustomer
+		#updateCustomer()
+		#deleteCustomer()
 		#
 
 service: 
+	
+	关于查询,在添加的时候需要查询,这个时候没有uuid,所以查询方法先判断uuid参数有没有,没有这个参数就说明是添加
+									有uuid的话,说明是修改,这时候就不需要判断这个对象存不存在了.
+
+	查询返回的是一个Customer的数组
+
+	#addCustomer()
+	#selectCustomer()
+	#advSelectCustomer()
+	#editCustomer()
+	#deleteCustomer()
 
 servlet:
+	
+	返回页面的查询结果是Customer 数组,名称: selectResults, 存储在request里面
 
+	addServlet.java
+		先查询数据库有没有这个数据(查询结果为一个Customer对象),如果有的话就吧错误信息存储到request? 然后转发到add.jsp?
+					没有这个数据,加入uuid,把数据(getParameters())转化为customer对象(Map(String,String[]) -> Customer),然后插入数据库,插入成功之后返回成功信息?
+
+		所以Dao里面就有了函数: Customer findCustomer(Customer cus); insertCustomer(Customer cus);
+		工具类里面函数: Customer paramsToBean(Map(String,String[])) --> <T> T paramsToBean(Map(String,String[]), class<T> clazz)
+
+	selectServlet.java
+		先得到参数列表(getParameters()) ,然后查询,查询结果返回一个Customer数组,如果对象为空那么说明没有没有找到数据,保存错误信息到request ? 转发到select.jsp显示错误信息. 如果对象不为空,那么就吧对象保存到request? 然后转发到selet.jsp?然后从对象里面读取数据显示出来.
+
+
+
+	advancedSelectServlet.java
+		得到参数列表,然后根据参数的参数名修改sql,然后查询,结果返回Customer的数组,
+			如果对象不为空就吧数据存储在request,然后转发到advancedSelect.jsp,显示查询结果
+			如果对象为空就保存错误信息到request,然后转发到advancedSelect.jsp,显示错误信息
+
+		dao里面需要的函数: Customer advancedSelect(Map(String,String[]))
+			先拼接sql,然后填值(在拼接sql的时候顺便吧值加入到一个list里面,然后反转),之后赋值.或者直接赋值在sql里面
+
+	editServlet.java
+	deleteServlet.java
 
 数据库: 还需要在数据库内设置一个isDelete的属性,默认是false,执行完了删除之后变成了true
 	id: 
-	name:
+	name: 
 	sex:
 	birthday:
 	phoneNumber:
