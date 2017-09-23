@@ -100,3 +100,5 @@ servlet:
 	phoneNumber:
 	email:
 	description:
+
+感觉可以直接写一个借口关于resultsetHandler 适用于各种的entity
