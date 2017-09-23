@@ -1,10 +1,14 @@
 package com.joah.tableOperation.Utils.jdbc;
 
+import com.joah.tableOperation.entity.Customer;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class JDBCUtils {
     private static DataSource dataSource=new ComboPooledDataSource("c3p0config");
@@ -104,5 +108,48 @@ public class JDBCUtils {
         }
     }
 
+    /**
+     * 增删改查操作
+     */
+    public static void update(String sql,String ...args) throws SQLException {
+        Connection connection = getConnection();
+        PreparedStatement preparedStatement= connection.prepareStatement(sql);
+        for (int i = 0; i < args.length; i++) {
+            String arg = args[i];
+            preparedStatement.setObject(i+1,arg);
+        }
+        preparedStatement.executeUpdate();
+    }
 
+    public static ResultSet select(String sql,String ...args) throws SQLException {
+        Connection connection = getConnection();
+        PreparedStatement preparedStatement=connection.prepareStatement(sql);
+        for (int i = 0; i < args.length; i++) {
+            String arg = args[i];
+            preparedStatement.setObject(i+1,arg);
+        }
+        return preparedStatement.executeQuery();
+    }
+
+    public static <T> T query(String sql,ResultsetHandler<T> rsh,String ...args) throws SQLException {
+        Connection connection = getConnection();
+        PreparedStatement preparedStatement=connection.prepareStatement(sql);
+        for (int i = 0; i < args.length; i++) {
+            String arg = args[i];
+            preparedStatement.setObject(i+1,arg);
+        }
+        ResultSet resultSet = preparedStatement.executeQuery();
+        return rsh.handle(resultSet);
+    }
+
+    public static <T> T query(String sql, ResultsetHandler<T> rsh, ArrayList<String> list) throws SQLException {
+        Connection connection = getConnection();
+        PreparedStatement preparedStatement=connection.prepareStatement(sql);
+        for (int i = 0; i < list.size(); i++) {
+            String s = list.get(i);
+            preparedStatement.setObject(i+1,s);
+        }
+        ResultSet resultSet = preparedStatement.executeQuery();
+        return rsh.handle(resultSet);
+    }
 }
