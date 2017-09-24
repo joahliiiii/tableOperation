@@ -8,9 +8,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
+import java.util.Objects;
+
 
 public class CustomerDao {
 
@@ -130,6 +130,47 @@ public class CustomerDao {
 
     }*/
 
+    public static void updateCustomer(Customer cus,Customer sessionCus) throws SQLException {
+
+        String sex = Objects.equals(cus.getSex(), sessionCus.getSex()) ? null : cus.getSex();
+        cus.setSex(sex);
+        String name = Objects.equals(cus.getName(), sessionCus.getName()) ? null : cus.getName();
+        cus.setName(name);
+
+        String email = Objects.equals(cus.getEmail(), sessionCus.getEmail()) ? null : cus.getEmail();
+        cus.setEmail(email);
+        String phone = Objects.equals(cus.getPhoneNumber(), sessionCus.getPhoneNumber()) ? null : cus.getPhoneNumber();
+        cus.setPhoneNumber(phone);
+        String birth = Objects.equals(cus.getBirthday(), sessionCus.getBirthday()) ? null : cus.getBirthday();
+        cus.setBirthday(birth);
+        String desc = Objects.equals(cus.getDescription(), sessionCus.getDescription()) ? null : cus.getDescription();
+        cus.setDescription(desc);
+
+        System.out.println(cus);
+
+        String sql0 = "update Customer set isDelete = 0 ";
+        ArrayList<String> list = new ArrayList<>();
+        String sql = getSql(sql0, cus, list);
+//        sql.concat(" where 1 = 1 ");
+        sql = sql + " where 1 = 1 ";
+        sql = sql.replaceAll(" and",",");
+//        System.out.println(sql);
+
+        String finalSql = getSql(sql, sessionCus, list);
+
+        /*System.out.println(finalSql);
+        for (String s : list) {
+            System.out.print(s + "  ");
+        }*/
+
+        Connection connection = JDBCUtils.getConnection();
+        JDBCUtils.beginTransaction();
+
+        JDBCUtils.update(finalSql,list);
+
+        JDBCUtils.commitTransaction();
+        JDBCUtils.realse(connection);
+    }
 
     /**
      * 传入一个 sql 语句然后根据Customer 的参数名生成对应的 sql
