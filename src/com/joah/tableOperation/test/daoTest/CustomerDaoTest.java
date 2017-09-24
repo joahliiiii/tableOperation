@@ -72,4 +72,19 @@ public class CustomerDaoTest {
 
         CustomerDao.deleteCustomer(customer);
     }
+
+    @Test
+    public void updateCustomerTest() throws SQLException {
+        Customer customer = new Customer();
+        customer.setId("111");
+        customer.setEmail("helloJoah@qw.cn");
+
+        Customer sessionCus = new Customer();
+        sessionCus.setId("111");
+        sessionCus.setName("jj");
+        sessionCus.setSex("male");
+        sessionCus.setPhoneNumber("12345678900");
+
+        CustomerDao.updateCustomer(customer,sessionCus);
+    }
 }
