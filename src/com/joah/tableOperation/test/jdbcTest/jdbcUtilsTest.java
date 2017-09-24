@@ -8,6 +8,7 @@ import org.junit.Test;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class jdbcUtilsTest {
 
@@ -37,6 +38,26 @@ public class jdbcUtilsTest {
         JDBCUtils.realse(connection);
     }
 
+    @Test
+    public void update2Test() throws SQLException {
+        Connection connection = JDBCUtils.getConnection();
+        JDBCUtils.beginTransaction();
+        String sql="INSERT  INTO Customer(id, name, sex, birthday, phoneNumber, email, description) \n" +
+                "              VALUES(?,?,?,?,?,?,?);";
+        ArrayList<String> list = new ArrayList<>();
+        list.add("123456789");
+        list.add("Summering");
+        list.add("male");
+        list.add("19960808");
+        list.add("14725896302");
+        list.add("1234567890@zz.com");
+        list.add("hello");
+
+        JDBCUtils.update(sql,list);
+
+        JDBCUtils.commitTransaction();
+        JDBCUtils.realse(connection);
+    }
     @Test
     public void selectTest() throws SQLException {
         Connection connection = JDBCUtils.getConnection();
