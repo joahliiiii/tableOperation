@@ -4,6 +4,7 @@ import com.joah.tableOperation.Utils.jdbc.JDBCUtils;
 import com.joah.tableOperation.Utils.jdbc.ResultsetHandler;
 import com.joah.tableOperation.entity.Customer;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -19,10 +20,11 @@ public class CustomerDao {
      * 只适合结果集为一行的
      */
     private static ResultsetHandler<Customer> defaultHandler = new ResultsetHandler<Customer>() {
+        @SuppressWarnings("Duplicates")
         @Override
         public Customer handle(ResultSet resultSet) throws SQLException {
-            Customer cus=null;
-            if(resultSet.next()){
+            Customer cus = null;
+            if (resultSet.next()) {
                 cus = new Customer();
                 cus.setId(resultSet.getString("id"));
                 cus.setName(resultSet.getString("name"));
@@ -36,11 +38,10 @@ public class CustomerDao {
             return cus;
         }
     };
-
     /**
      * 在添加客户的时候使用,添加用户之前的校验
      * @param customer 用户对象
-     * @return 返回查询出的对象
+     * @return 返回查询出的对象,如果没有则为null
      */
     public static Customer findCustomer(Customer customer) throws SQLException {
         /*
@@ -48,59 +49,124 @@ public class CustomerDao {
          * 执行 query() 方法得到Customer
          */
         ArrayList<String> list = new ArrayList<>();
-        String sql = getSql(customer, list);
+        String sql0="SELECT * FROM Customer WHERE 1=1 and isDelete = 0";
+        String sql = getSql(sql0, customer, list);
 
-        return JDBCUtils.query(sql, defaultHandler, list);
+        Connection connection = JDBCUtils.getConnection();
+        JDBCUtils.beginTransaction();
 
-    }
+        Customer query = JDBCUtils.query(sql, defaultHandler, list);
 
-    public static void insertCustomer(Customer customer){
+        JDBCUtils.commitTransaction();
+        JDBCUtils.realse(connection);
+        return query;
 
-    }
-
-    public static Customer advancedSelect(Map<String,String[]> map){
-        return null;
     }
 
     /**
-     * 根据参数的个数的变化生成sql 和 参数列表
-     * @param cus 对象
-     * @param list 参数的list
-     * @return 返回生成之后的sql
+     * 插入一个新用户
+     * @param customer 用户对象
+     * @throws SQLException 抛出数据库处理异常
      */
-    public static String getSql(Customer cus,List<String> list){
-        StringBuilder sql=new StringBuilder("SELECT * FROM Customer WHERE 1=1  ");
-//        List<String> list = new ArrayList<>();
-        // 添加一个参数就在list里面添加一个参数值
-        // 在这里需要注意 一定要在初始化sql 里面加一个一定成立的条件.使得单独一个初始sql也可以进行查询
+    public static void insertCustomer(Customer customer) throws SQLException {
+        /*
+         * 先生成 sql
+         * 执行 update 方法
+         */
+        String sql="INSERT  INTO Customer(id, name, sex, birthday, phoneNumber, email, description) \n" +
+                "              VALUES(?,?,?,?,?,?,?);";
+        ArrayList<String> list = new ArrayList<>();
+        list.add(customer.getId());
+        list.add(customer.getName());
+        list.add(customer.getSex());
+        list.add(customer.getBirthday());
+        list.add(customer.getPhoneNumber());
+        list.add(customer.getEmail());
+        list.add(customer.getDescription());
+
+        Connection connection = JDBCUtils.getConnection();
+        JDBCUtils.beginTransaction();
+
+        JDBCUtils.update(sql,list);
+
+        JDBCUtils.commitTransaction();
+        JDBCUtils.realse(connection);
+
+    }
+
+    /**
+     * 删除一个用户
+     * @param customer Customer 对象
+     * @throws SQLException 抛出SQL操作异常
+     */
+    public static void deleteCustomer(Customer customer) throws SQLException {
+        /*
+        得到sql
+        调用JDBCUtils.update()修改 isDelete 的值
+         */
+        String sql0 = "update Customer set isDelete = 1 where 1=1 ";
+        ArrayList<String> list = new ArrayList<>();
+
+        String sql = getSql(sql0, customer, list);
+        System.out.println(sql);
+        for (String s : list) {
+            System.out.print(s + "  ");
+        }
+
+        Connection connection = JDBCUtils.getConnection();
+        JDBCUtils.beginTransaction();
+
+        JDBCUtils.update(sql,list);
+
+        JDBCUtils.commitTransaction();
+        JDBCUtils.realse(connection);
+
+    }
+
+/*    public static Customer advancedSelect(Customer cus){
+        *//*
+         *先生成sql
+         *//*
+
+    }*/
+
+
+    /**
+     * 传入一个 sql 语句然后根据Customer 的参数名生成对应的 sql
+     * @param sql sql
+     * @param cus Customer 对象
+     * @param list 参数list
+     * @return 返回生成的sql
+     */
+    public static String getSql(String sql,Customer cus,List<String> list){
         if (cus.getId()!=null && !cus.getId().equals("")){
-            sql.append(" and id=? ");
+            sql=sql.concat(" and id=? ");
             list.add(cus.getId());
         }
         if (cus.getName()!=null && !cus.getName().equals("")){
-            sql.append(" and name=? ");
+            sql=sql.concat(" and name=? ");
             list.add(cus.getName());
         }
         if (cus.getSex()!=null && !cus.getSex().equals("")){
-            sql.append(" and sex=? ");
+            sql=sql.concat(" and sex=? ");
             list.add(cus.getSex());
         }
         if (cus.getBirthday()!=null && !cus.getBirthday().equals("")){
-            sql.append(" and birthday=? ");
+            sql=sql.concat(" and birthday=? ");
             list.add(cus.getBirthday());
         }
         if (cus.getPhoneNumber()!=null && !cus.getPhoneNumber().equals("")){
-            sql.append(" and phoneNumber=? ");
+            sql=sql.concat(" and phoneNumber=? ");
             list.add(cus.getPhoneNumber());
         }
         if (cus.getEmail()!=null && !cus.getEmail().equals("")){
-            sql.append(" and email=? ");
+            sql=sql.concat(" and email=? ");
             list.add(cus.getEmail());
         }
         if (cus.getDescription()!=null && !cus.getDescription().equals("")){
-            sql.append(" and description=? ");
+            sql=sql.concat(" and description=? ");
             list.add(cus.getDescription());
         }
-        return sql.toString();
+        return sql;
     }
 }
