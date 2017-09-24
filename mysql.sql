@@ -14,3 +14,4 @@ INSERT  INTO Customer(id, name, sex, birthday, phoneNumber, email, description)
 
 SELECT name FROM Customer WHERE id='1324';
 
+UPDATE Customer SET isDelete = 1 WHERE 1=1 AND

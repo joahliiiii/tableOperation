@@ -111,12 +111,35 @@ public class JDBCUtils {
     /**
      * 增删改查操作
      */
+
+    /**
+     * 可以进行 update / insert 操作,
+     * @param sql SQL语句
+     * @param args 不定参数
+     * @throws SQLException 抛出SQL异常
+     */
     public static void update(String sql,String ...args) throws SQLException {
         Connection connection = getConnection();
         PreparedStatement preparedStatement= connection.prepareStatement(sql);
         for (int i = 0; i < args.length; i++) {
             String arg = args[i];
             preparedStatement.setObject(i+1,arg);
+        }
+        preparedStatement.executeUpdate();
+    }
+
+    /**
+     * 可以进行 update / insert 操作,但是参数是 list形式的
+     * @param sql sql语句
+     * @param list 参数的list
+     * @throws SQLException 抛出数据库操作异常
+     */
+    public static void update(String sql, ArrayList<String> list) throws SQLException {
+        Connection connection = getConnection();
+        PreparedStatement preparedStatement= connection.prepareStatement(sql);
+        for (int i = 0; i < list.size(); i++) {
+            String s = list.get(i);
+            preparedStatement.setObject(i+1,s);
         }
         preparedStatement.executeUpdate();
     }
@@ -152,4 +175,6 @@ public class JDBCUtils {
         ResultSet resultSet = preparedStatement.executeQuery();
         return rsh.handle(resultSet);
     }
+
+
 }
