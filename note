@@ -4,3 +4,8 @@
     <base> 标签必须位于 head 元素内部。
 3.在使用高级查询的时候,需要根据实际的参数个数来改变sql 语句,所以需要先判断是否存在这个元素然后在对sql进行更改.
     需要注意写初始sql的时候要写一个一定为 true 的sql ,然后在添加条件的时候就直接 and 条件  就可以了.
+4.在进行字符串替换的时候,出现了一个问题: 报错情况如下:
+    String.replace result is ignored　
+    源代码：sql.replaceAll(" and",",");
+    解决办法: sql = sql.replaceAll(" and",",");  链接 : https://stackoverflow.com/questions/36024703/string-replace-result-is-ignored
+5.
